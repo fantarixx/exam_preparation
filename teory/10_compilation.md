@@ -262,12 +262,18 @@ int main() {
 		    > 	- `#pragma pack(N)` уменьшает выравнивание, но может замедлить доступ к данным.
 		    > 	- Пример с `#pragma pack`:
 		    > 		```Cpp
-			> 		#pragma pack(push, 1) // Сохраняем текущее выравнивание и устанавливаем 1 байт
-			> 		struct Data {
-			> 			char a;
-			> 			int b;
+			> 		#pragma pack(1) //устанавливаем выравнивание на 1
+			> 		struct SomeStruct {
+			> 			int i;
+			> 			char ch;
 			> 		};
-			>		#pragma pack(pop) // Восстанавливаем предыдущее выравнивание
+			> 		#pragma pack //отменяем выравнивание
+			> 		
+			> 		int main() {
+			> 		printf("%d\n", sizeof(struct SomeStruct));
+			> 		
+			> 		return 0;
+			> 		}
 			>		```
 		    > 	- Пример с `alignas`:  
 		    > 		```Cpp
@@ -307,6 +313,80 @@ int main() {
 	int add(int a, int b);
 	
 	#endif
+	```
+
+## Компилятор
+- На вход компилятору поступает код на ***C++*** после обработки препроцессором.
+- Каждый файл с кодом компилируется **отдельно** и **независимо** от других файлов с кодом.
+- Компилируется только файлы с кодом (т.е. ***`.cpp`***).
+- Заголовочные файлы сами по себе ни во что не компилируются, только в составе файлов с кодом.
+- На выходе компилятора из каждого файла с кодом получается **“объектный файл”** - *бинарный* файл со скомпилированным кодом (с расширением `.o` или `.obj`).
+
+***<u>Пример:</u>***
+- Код на **C++**:
+	```Cpp
+	void increment( int& v) {
+		v++;
+	}
+
+	int add(int a, int b) {
+		return a + b;
+	}
+
+	int main(int, char**) {
+		int x = 1;
+		int y = 2;
+
+		increment(y);
+		int result = add(x, y);
+
+		return 0;
+	}
+	```
+- Код на **Assmebly**:
+	```asm
+		.text
+	    .globl  _Z9incrementRi        # -- Begin function _Z9incrementRi
+	    .p2align    4, 0x90
+	    .type   _Z9incrementRi,@function
+	_Z9incrementRi:                    # @_Z9incrementRi
+	    .cfi_startproc
+	# %bb.0:
+	
+		pushq   %rbp
+	    .cfi_def_cfa_offset 16
+	    .cfi_offset %rbp, -16
+	    movq    %rsp, %rbp
+	    .cfi_def_cfa_register %rbp
+	    movq    %rdi, -8(%rbp)
+	    movq    -8(%rbp), %rax
+	    movl    (%rax), %ecx
+	    addl    $1, %ecx
+	    movl    %ecx, (%rax)
+	    popq    %rbp
+	    .cfi_def_cfa %rsp, 8
+	    retq
+	.Lfunc_end1:
+	    .size   _Z9incrementRi, .Lfunc_end1-_Z9incrementRi
+	    .cfi_endproc
+	                                        # -- End function
+	main:                                   # @main
+	    .cfi_startproc
+	
+	# %bb.0:
+		pushq   %rbp
+	    .cfi_def_cfa_offset 16
+	    .cfi_offset %rbp, -16
+	    movq    %rsp, %rbp
+	    .cfi_def_cfa_register %rbp
+	    subq    $48, %rsp
+	    movl    $0, -4(%rbp)
+	    movl    %edi, -8(%rbp)
+	    movq    %rsi, -16(%rbp)
+	    movl    $1, -20(%rbp)
+	    movl    $2, -24(%rbp)
+	    leaq    -24(%rbp), %rdi
+	    callq   _Z9incrementRi
 	```
 
 ### Все этапы:
