@@ -1,20 +1,85 @@
 Тут представленны задания других групп с экзамена по ОП 1 курса ITMO IS y28.
 
 # Задания
+- Свой класс IntOrNot (5).
+    ```Cpp
+    class IntOrNot {
+        //
+    }
+
+    void print(const IntOrNot& value) {
+        if(value)
+            std::cout << *value;
+        else 
+            std::cout << "no value";
+    }
+
+    int main() {
+        IntOrNot v;
+
+        print(v); // no value
+
+        v = 10;
+        print(v); // 10
+
+        return 0; 
+    }
+    ```
+
 - Свой класс Vector.
     ```Cpp
+    #include <iostream>
+    
+    class Vector {
+        //
+    };
+
+    int main() {
+        Vector vec1;
+        Vector vec2 = (2);
+        Vector vec5 = vec1;
+
+        std::cout << vec2 << std::endl;      // 2
+ 
+
+        vec1.push_back(1);
+
+        std::cout << vec1 << std::endl;     // 1
+ 
+        vec2.push_back(3);
+        vec2.push_back(4);
+        vec2.push_back(5);
+        vec2.push_back(6);
+        vec2.push_back(7);
+
+        std::cout << vec2 << std::endl;      // 2 1 3 4 5 6 7
+ 
+        vec2.pop_back();
+
+        std::cout << vec2 << std::endl;     // 2 1 3 4 5 6
+ 
+        std::cout << vec2.size << ' ' << vec2.capacity << std::endl;        // 6 ..
+        
+        const Vector vec3(vec2);
+        
+        std::cout << vec3 << std::endl;     // 2 1 3 4 5 6
+        
+        vec4 = vec1 + vec2;
+        std::cout << vec4 << std::endl;     // 1 2 1 3 4 5 6
+
+        return 0;
+    }
     ```
 
 - Свой класс Map.
     ```Cpp
     // ключ - всегда инт, значение - произвольный тип данных
     // можно испльзовать std::vector
-
     #include <iostream>
     #include <vector>
     
     class Map {
-    
+        //
     };
     
     int main() {
@@ -41,6 +106,12 @@
 
 - Свой класс IntArray.
     ```Cpp
+    #include <iostream>
+    
+    class IntArray {
+        //
+    };
+
     int main() {
         IntArray a{3, 0};
         std::cout << a << std::endl;  // 0 0 0
@@ -59,6 +130,12 @@
     ```
 - (20).
     ```Cpp
+    #include <iostream>
+    
+    class IntSet {
+        //
+    };
+    
     int main() {
         IntSet s;
 
